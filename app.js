@@ -79,11 +79,3 @@ const init = () => {
       }
     });
 };
-
-const app = {
-  init: init,
-};
-
-module.exports = {
-  app: app,
-};

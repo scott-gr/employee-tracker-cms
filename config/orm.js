@@ -25,41 +25,35 @@ var orm = {
       connection.query('INSERT INTO employee SET ?', employeeList, err =>{
         if (err) throw (err);
         console.log ('Success! New employee added to list.');
-        init();                                                                                                ')
-      }
-    }); /// find issue
+        init();                                                                                                
+      });
+    });
+  },
 
-  }
-    //   selectWhere: function(tableInput, colToSearch, valOfCol) {
-    //     var queryString = "SELECT * FROM ?? WHERE ?? = ?";
-    //     connection.query(queryString, [tableInput, colToSearch, valOfCol], function(err, result) {
-    //       if (err) throw err;
-    //       console.log(result);
-    //     });
-    //   },
-      // selectAndOrder: function(whatToSelect, table, orderCol) {
-      //   var queryString = "SELECT ?? FROM ?? ORDER BY ?? DESC";
-      //   console.log(queryString);
-      //   connection.query(queryString, [whatToSelect, table, orderCol], function(err, result) {
-      //     if (err) throw err;
-      //     console.log(result);
-    //     });
-    //   },
-    //   findWhoHasMost: function(tableOneCol, tableTwoForeignKey, tableOne, tableTwo) {
-    //     var queryString =
-    //       "SELECT ??, COUNT(??) AS count FROM ?? LEFT JOIN ?? ON ??.??= ??.id GROUP BY ?? ORDER BY count DESC LIMIT 1";
-    
-    //     connection.query(
-    //       queryString,
-    //       [tableOneCol, tableOneCol, tableOne, tableTwo, tableTwo, tableTwoForeignKey, tableOne, tableOneCol],
-    //       function(err, result) {
-    //         if (err) throw err;
-    //         console.log(result);
-    //       }
-    //     );
-    //   }
-    // };
-    
+  removeEmployee = () => {
+    connection.query('SELECT * FROM employee', (err, eData) => {
+      if (err) throw err;
+      let selectedEmployee = eData.map(employee => `${employee.id} ${employee.first_name} ${employee.last_name}`);
+      inquirer.prompt([
+        {
+          type: 'list',
+          message: 'Which employee should be removed from the database?',
+          choices: selectedEmployee,
+          name: 'employee'
+        }
+      ]).then(output => {
+        let employeeId = output.employee.slice(0,2);
+        let employeeName = output.employee.slice(3);
+        connection.query('DELETE FROM employee WHERE id = ?', [employeeId], err => {
+          if (err) throw err;
+          console.log(`${employeeName} has beeen removed.`);
+          init();
+        });
+      });
+    });
+  },
+  
+}
 
 
 module.exports = orm;
