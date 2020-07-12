@@ -52,7 +52,34 @@ var orm = {
       });
     });
   },
-  
+
+  addNewRole = () => {
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'Please enter the first name of the employee:'
+      },
+      {
+        type: 'input',
+        name: 'salary',
+        message: 'Please enter the last name of the employee:'
+      },
+      {
+        type: 'input',
+        name: 'department_id',
+        message: 'Please enter the role id of the new employee:'
+      },
+
+    ]).then(roleList => {
+      connection.query('INSERT INTO role SET ?', roleList, err =>{
+        if (err) throw (err);
+        console.log ('Success! ${roleList.title} has been added.');
+        init();                                                                                                
+      });
+    });
+  },
+
 }
 
 
