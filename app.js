@@ -1,8 +1,9 @@
+//dependencies
 const connection = require('./config/connection');
 const inquirer = require('inquirer');
 
-///sample orm code
 
+///add new employee function
 addNewEmployee = () => {
   inquirer.prompt([
     {
@@ -29,7 +30,7 @@ addNewEmployee = () => {
     });
   });
 },
-
+// remove employee function
 removeEmployee = () => {
   connection.query('SELECT * FROM employee', (err, eData) => {
     if (err) throw err;
@@ -61,7 +62,7 @@ removeEmployee = () => {
       });
   });
 },
-
+/// add new role function
 addNewRole = () => {
   inquirer.prompt([
       {
@@ -89,7 +90,7 @@ addNewRole = () => {
       });
     });
   },
-
+//// remove role function
 removeRole = () => {
   connection.query('SELECT * FROM role', (err, eData) => {
     if (err) throw err;
@@ -115,7 +116,7 @@ removeRole = () => {
       });
   });
 },
-
+////add new department function
 addNewDept = () => {
 inquirer.prompt([
     {
@@ -134,7 +135,7 @@ inquirer.prompt([
     });
   });
 };
-
+/// Remove department function
 removeDept = () => {
   connection.query('SELECT * FROM department', (err, eData) => {
     if (err) throw err;
@@ -161,7 +162,32 @@ removeDept = () => {
       });
   });
 },
+///view all roles function
+viewAllRoles = () => {
+  connection.query('SELECT * FROM role', (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    init();
+  })
+};
+/// view all departments function
+viewAllDepartments = () => {
+  connection.query('SELECT * FROM department', (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    init();
+  })
+};
+/// view all employees function
+viewAllEmployees = () => {
+  connection.query('SELECT * FROM employee', (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    init();
+  })
+};
 
+/// initialize app. Prompt user.
 init = () => {
   inquirer
     .prompt([
@@ -169,7 +195,7 @@ init = () => {
         ////////choices of functions in the program
         type: 'list',
         name: 'selection',
-        message: 'What do you want to do?',
+        message: 'Welcome to the Employee Tracker. What do you want to do?',
         choices: [
           'View All Employees',
           'View All Roles',
@@ -189,6 +215,7 @@ init = () => {
         ],
       },
     ])
+    ///connects each prompt to the function
     .then((data) => {
       switch (data.selection) {
         case 'Add Employee':
@@ -226,3 +253,6 @@ init = () => {
       }
     });
 };
+
+
+
