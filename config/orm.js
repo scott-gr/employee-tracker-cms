@@ -3,7 +3,7 @@ const inquirer = require("inquirer");
 
 ///sample orm code
 var orm = {
-  addNewEmployee = () => {
+  addNewEmployee: () => {
     inquirer.prompt([
       {
         type: 'input',
@@ -30,7 +30,7 @@ var orm = {
     });
   },
 
-  removeEmployee = () => {
+  removeEmployee: () => {
     connection.query('SELECT * FROM employee', (err, eData) => {
       if (err) throw err;
       let selectedEmployee = eData.map(employee => `${employee.id} ${employee.first_name} ${employee.last_name}`);
@@ -53,7 +53,7 @@ var orm = {
     });
   },
 
-  addNewRole = () => {
+  addNewRole: () => {
     inquirer.prompt([
       {
         type: 'input',
@@ -76,6 +76,29 @@ var orm = {
         if (err) throw (err);
         console.log ('Success! ${roleList.title} has been added.');
         init();                                                                                                
+      });
+    });
+  },
+
+  removeRole: () => {
+    connection.query('SELECT * FROM role', (err, eData) => {
+      if (err) throw err;
+      let selectedEmployee = eData.map(employee => `${employee.id} ${employee.first_name} ${employee.last_name}`);
+      inquirer.prompt([
+        {
+          type: 'list',
+          message: 'Which employee should be removed from the database?',
+          choices: selectedEmployee,
+          name: 'employee'
+        }
+      ]).then(output => {
+        let employeeId = output.employee.slice(0,2);
+        let employeeName = output.employee.slice(3);
+        connection.query('DELETE FROM employee WHERE id = ?', [employeeId], err => {
+          if (err) throw err;
+          console.log(`${employeeName} has beeen removed.`);
+          init();
+        });
       });
     });
   },
