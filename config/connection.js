@@ -1,3 +1,4 @@
+///dependencies
 const mysql = require("mysql");
 const cTable = require('console.table');
 const inquirer = require("inquirer");
@@ -6,7 +7,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "Gemma2020",
+  password: "Gemma2020", /// or your mysql pw if remaking database
   database: "office_cmsDB"
 });
 
